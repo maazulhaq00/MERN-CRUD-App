@@ -6,6 +6,7 @@ require("dotenv").config()
 const express = require("express");
 const connectToDb = require("./config/connectToDb");
 const Student = require("./models/student");
+const studentController = require("./controllers/studentController")
 
 // Create express app
 const app = express();
@@ -22,37 +23,13 @@ app.get("/", (req, res) => {
     res.json({"message": "Hello World", "status": "success"});
 })
 
-// POST api to insert document in student collection
-app.post("/students", async (req, res)=>{
-    // data get from body
-    let name = req.body.name;
-    let age = req.body.age;
-    let email = req.body.email;
+// Routes to handle students collection
 
-    const student = await Student.create({
-        name: name,
-        age: age,
-        email: email
-    })
-
-    res.json({"student": student});
-})
-
-// GET api to get all students from students collection
-app.get("/students", async (req, res)=>{
-    const students = await Student.find();
-    res.json({"students": students})
-})
-
-// GET api to get a students document by Id from students collection
-app.get("/students/:id", async (req, res)=>{
-
-    const studentId = req.params.id;
-
-    const student = await Student.findById(studentId);
-
-    res.json({"student": student});
-})
+app.post("/students", studentController.createStudent)
+app.get("/students", studentController.fetchStudents)
+app.get("/students/:id", studentController.fetchStudentById)
+app.put("/students/:id", studentController.updateStudent)
+app.delete("/students/:id", studentController.deleteStudent)
 
 
 // Start Server
