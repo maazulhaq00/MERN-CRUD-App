@@ -4,6 +4,7 @@ require("dotenv").config()
 
 // Import dependencies
 const express = require("express");
+const cors = require("cors");
 const connectToDb = require("./config/connectToDb");
 const Student = require("./models/student");
 const studentController = require("./controllers/studentController")
@@ -13,6 +14,7 @@ const app = express();
 
 // configure express app
 app.use(express.json())
+app.use(cors())
 
 // connecting to database
 connectToDb();
